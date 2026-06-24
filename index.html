@@ -2,9 +2,12 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
-    <title>BULLET HELL</title>
+    <title>SALA ROXA</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
@@ -22,54 +25,45 @@
       body {
         width: 100%;
         height: 100%;
-
         display: flex;
         justify-content: center;
         align-items: center;
-
         overflow: hidden;
-
         font-family: "VT323", monospace;
+        background: #000;
       }
 
       body::before {
         content: "";
-
         position: fixed;
         inset: 0;
-
         background:
           linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
           url("background.png");
-
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
-
         z-index: -1;
       }
 
       .crt-container {
         width: 900px;
+        max-width: 100%;
         height: 650px;
+        max-height: 95vh;
         position: relative;
+        padding: 10px;
       }
 
       .crt {
         width: 100%;
         height: 100%;
-
         background: #000;
-
         border: 4px solid #9e2fc8;
         border-radius: 12px;
-
         overflow: hidden;
-
         box-shadow:
           0 0 20px #9e2fc8,
           0 0 50px rgba(91, 2, 255, 0.6);
-
         position: relative;
       }
 
@@ -88,7 +82,6 @@
           rgba(91, 2, 255, 0.12) 50%,
           rgba(91, 2, 255, 0.02) 100%
         );
-
         background-size: 100% 4px;
       }
 
@@ -107,177 +100,159 @@
         100% {
           opacity: 0.1;
         }
-
         22% {
           opacity: 0.3;
         }
-
         30% {
           opacity: 0.6;
         }
-
         35% {
           opacity: 0.2;
         }
       }
 
-      .menu {
+      .menu,
+      .game {
         position: absolute;
         inset: 0;
-
-        display: flex;
+        padding: 20px;
+        display: none;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
         color: #9e2fc8;
         text-align: center;
       }
 
+      .menu.active,
+      .game.active {
+        display: flex;
+      }
+
       .menu h1 {
-        font-size: 80px;
-
+        font-size: 72px;
         margin-bottom: 40px;
-
         text-shadow:
           0 0 10px #9e2fc8,
           0 0 30px #9e2fc8;
       }
 
-      .menu p {
-        font-size: 34px;
-        margin: 8px 0;
+      .menu-option {
+        font-size: 36px;
+        margin: 12px 0;
+        cursor: pointer;
+        padding: 8px 30px;
+        transition: all 0.2s;
       }
 
-      .menu-message {
-        margin-top: 25px;
-        font-size: 24px;
-      }
-
-      .menu input {
-        width: 180px;
-
-        margin-top: 20px;
-
-        background: rgba(91, 2, 255, 0.1);
-
-        border: 2px solid #9e2fc8;
-
-        color: #9e2fc8;
-
-        text-align: center;
-
-        font-family: "VT323", monospace;
-        font-size: 26px;
-
-        padding: 8px;
-      }
-
-      .menu input:focus {
-        outline: none;
-        box-shadow: 0 0 15px #9e2fc8;
-      }
-
-      .hidden {
-        display: none !important;
+      .menu-option:hover,
+      .menu-option:active {
+        color: #fff;
+        text-shadow: 0 0 20px #9e2fc8;
+        transform: scale(1.1);
       }
 
       .game {
-        position: absolute;
-        inset: 0;
-
-        padding: 15px;
-
-        display: flex;
         flex-direction: column;
-
-        color: #9e2fc8;
       }
 
       .title {
         text-align: center;
-        font-size: 34px;
-
+        font-size: 32px;
         margin-bottom: 10px;
-
         text-shadow: 0 0 10px #9e2fc8;
       }
 
       .status {
-        margin-top: 15px;
-
+        margin: 10px 0 15px;
         display: flex;
         justify-content: space-between;
-
-        font-size: 28px;
+        font-size: 26px;
+        width: 100%;
+        max-width: 700px;
       }
 
       .seats {
         flex: 1;
-
         display: grid;
-
-        grid-template-columns: repeat(5, 140px);
-        grid-template-rows: repeat(2, 140px);
-
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
         justify-content: center;
         align-content: center;
-
-        gap: 30px;
-
-        margin: 0 auto;
+        padding: 10px;
+        width: 100%;
       }
 
       .seat {
         background: transparent;
         border: none;
         padding: 0;
-
         cursor: pointer;
-
+        aspect-ratio: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-
         transition: transform 0.15s;
       }
 
-      .seat:hover {
-        transform: scale(1.1);
+      /* Efeito roxo no PC (hover) */
+      .seat:hover img {
+        filter: drop-shadow(0 0 6px #9e2fc8) drop-shadow(0 0 12px #9e2fc8)
+          drop-shadow(0 0 20px #9e2fc8) drop-shadow(0 0 30px #9e2fc8);
+      }
+
+      /* Efeito ao tocar no celular */
+      .seat:active {
+        transform: scale(1.15);
       }
 
       .seat img {
-        width: 140px;
-        height: 140px;
-
+        width: 100%;
+        height: 100%;
         object-fit: contain;
         image-rendering: pixelated;
       }
 
-      .seat:hover img {
-        filter: drop-shadow(0 0 4px #9e2fc8) drop-shadow(0 0 8px #9e2fc8)
-          drop-shadow(0 0 16px #9e2fc8) drop-shadow(0 0 24px #9e2fc8);
-      }
-
       .dead img {
-        filter: drop-shadow(0 0 4px #ff0048) drop-shadow(0 0 8px #ff0048)
-          drop-shadow(0 0 16px #ff0048) drop-shadow(0 0 24px #ff0048);
+        filter: drop-shadow(0 0 6px #ff0048) drop-shadow(0 0 12px #ff0048)
+          drop-shadow(0 0 20px #ff0048) drop-shadow(0 0 30px #ff0048);
       }
 
       .message {
-        min-height: 60px;
-
+        min-height: 50px;
         text-align: center;
-
-        font-size: 28px;
-
+        font-size: 26px;
         margin-top: 10px;
       }
 
       .game-over {
         color: #ff0048;
-
         text-shadow: 0 0 15px #ff0048;
+      }
+
+      /* Mobile adjustments */
+      @media (max-width: 768px) {
+        .crt-container {
+          padding: 5px;
+        }
+        .menu h1 {
+          font-size: 52px;
+        }
+        .menu-option {
+          font-size: 28px;
+        }
+        .title {
+          font-size: 26px;
+        }
+        .status {
+          font-size: 22px;
+        }
+        .message {
+          font-size: 22px;
+        }
+        .seats {
+          gap: 12px;
+        }
       }
     </style>
   </head>
@@ -289,32 +264,32 @@
         <div class="flicker"></div>
         <div class="vignette"></div>
 
-        <div class="menu" id="menu">
-          <h1>BULLET HELL</h1>
-
-          <p>1 - INICIAR</p>
-          <p>2 - INSTRUÇÕES</p>
+        <!-- MENU -->
+        <div class="menu active" id="menu">
+          <h1>SALA ROXA</h1>
+          <div class="menu-option" id="start-btn">1 - INICIAR</div>
+          <div class="menu-option" id="instructions-btn">2 - INSTRUÇÕES</div>
         </div>
-        <div class="menu hidden" id="instructions">
-          <h1>INSTRUÇÕES</h1>
 
+        <!-- INSTRUÇÕES -->
+        <div class="menu" id="instructions">
+          <h1>INSTRUÇÕES</h1>
           <p>Você possui 6 balas.</p>
           <p>Existem 10 suspeitos.</p>
-          <p>Clique em alguém para atirar.</p>
+          <p>Toque em alguém para atirar.</p>
           <p>Descubra quem é o impostor.</p>
-
-          <p style="margin-top: 40px">ESC - VOLTAR</p>
+          <div class="menu-option" id="back-btn" style="margin-top: 40px">
+            ESC - VOLTAR
+          </div>
         </div>
-        <div class="game hidden" id="game">
+
+        <!-- JOGO -->
+        <div class="game" id="game">
           <div class="title">IDENTIFIQUE O SUSPEITO</div>
 
           <div class="status">
-            <span>
-              BALAS:
-              <span id="bullets">6</span>
-            </span>
-
-            <span> ALVOS: <span id="targets">10</span> </span>
+            <span>BALAS: <span id="bullets">6</span></span>
+            <span>ALVOS: <span id="targets">10</span></span>
           </div>
 
           <div class="seats" id="seats"></div>
@@ -326,8 +301,8 @@
 
     <script>
       const menu = document.getElementById("menu");
-      const game = document.getElementById("game");
       const instructions = document.getElementById("instructions");
+      const game = document.getElementById("game");
 
       const seatsContainer = document.getElementById("seats");
       const bulletsText = document.getElementById("bullets");
@@ -341,29 +316,41 @@
 
       gunshot.volume = 0.8;
 
+      // Botões do menu
+      document
+        .getElementById("start-btn")
+        .addEventListener("click", iniciarJogo);
+      document
+        .getElementById("instructions-btn")
+        .addEventListener("click", mostrarInstrucoes);
+      document
+        .getElementById("back-btn")
+        .addEventListener("click", esconderInstrucoes);
+
+      // Teclado (PC)
       document.addEventListener("keydown", (e) => {
-        if (!menu.classList.contains("hidden")) {
+        if (menu.classList.contains("active")) {
           if (e.key === "1") iniciarJogo();
           if (e.key === "2") mostrarInstrucoes();
-        } else if (!instructions.classList.contains("hidden")) {
+        } else if (instructions.classList.contains("active")) {
           if (e.key === "Escape") esconderInstrucoes();
         }
       });
 
       function mostrarInstrucoes() {
-        menu.classList.add("hidden");
-        instructions.classList.remove("hidden");
+        menu.classList.remove("active");
+        instructions.classList.add("active");
       }
 
       function esconderInstrucoes() {
-        instructions.classList.add("hidden");
-        menu.classList.remove("hidden");
+        instructions.classList.remove("active");
+        menu.classList.add("active");
       }
 
       function iniciarJogo() {
-        menu.classList.add("hidden");
-        instructions.classList.add("hidden");
-        game.classList.remove("hidden");
+        menu.classList.remove("active");
+        instructions.classList.remove("active");
+        game.classList.add("active");
 
         bullets = 6;
         remainingTargets = 10;
@@ -418,7 +405,6 @@
             FIM DA SESSÃO.
           </span>
         `;
-
           document
             .querySelectorAll(".seat")
             .forEach((btn) => (btn.disabled = true));
